@@ -4,6 +4,7 @@ WORKDIR /
 COPY ./ ./
 RUN python3 -m venv venv
 ENV VIRTUAL_ENV=/venv
+
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
  
 COPY requirements.txt .
@@ -18,6 +19,7 @@ COPY --from=builder /venv venv
 COPY main.py main.py
  
 ENV VIRTUAL_ENV=/venv
+
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
  
 EXPOSE 8000
