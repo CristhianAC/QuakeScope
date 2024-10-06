@@ -10,7 +10,7 @@ const NavigationBar = () => {
     <div>
       <ToggleAsideButton isOpened={isOpened} setIsOpened={setIsOpened} />
       <div
-        className={` bg-black/30 w-[100vw] h-[100vh] fixed z-50 transition-all animate-duration-800 ${
+        className={` bg-black/30 pointer-events-none w-[100vw] h-[100vh] fixed z-50 transition-all animate-duration-800 ${
           isOpened ? " opacity-100" : "opacity-0"
         }`}
       ></div>
