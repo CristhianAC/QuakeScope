@@ -1,0 +1,44 @@
+---
+import { onMount } from 'astro/client';
+import Chart from 'chart.js/auto';
+
+onMount(() => {
+  const ctx = document.getElementById('myPieChart').getContext('2d');
+  
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['Red', 'Orange', 'Blue'],
+      datasets: [{
+        label: 'Popularity of colours',
+        data: [55, 23, 96],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',   // Red
+          'rgba(255, 159, 64, 0.6)',    // Orange
+          'rgba(54, 162, 235, 0.6)'     // Blue
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Users Gained between 2016-2020"
+        }
+      }
+    }
+  });
+});
+---
+
+<div class="chart-container">
+  <canvas id="myPieChart"></canvas>
+</div>
+
+<style>
+.chart-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+</style>
