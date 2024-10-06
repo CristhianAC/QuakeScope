@@ -5,16 +5,20 @@ interface Props {
 
 const { title } = Astro.props;
 import NavigationBar from '@modules/NavigationBar';
+import { ViewTransitions } from 'astro:transitions';
+import '@fontsource-variable/montserrat';
 ---
 
 <!doctype html> 
 <html lang="en">
 <head>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
   <meta charset="UTF-8" />
   <meta name="description" content="Astro description" />
   <meta name="viewport" content="width=device-width" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{title}</title>
+  <ViewTransitions />
 </head>
 
 <body>
@@ -76,14 +80,54 @@ import NavigationBar from '@modules/NavigationBar';
     --md-sys-color-surface-container: rgb(26, 33, 33);
     --md-sys-color-surface-container-high: rgb(37, 43, 43);
     --md-sys-color-surface-container-highest: rgb(47, 54, 54);
+    --md-sys-color-inverse-primary-transparent: rgba(78, 23, 23, 0.578);
   }
+  
   
   html {
-    font-family: system-ui, sans-serif;
+    
     background: var(--md-sys-color-background);
     color: var(--md-sys-color-on-background);
+
+    scroll-behavior: smooth;
+    font-family: 'Montserrat Variable', sans-serif;
   }
-  
+  html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+  ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      backdrop-filter: blur(10px);
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
   h1, h2, h3, h4, h5, h6 {
     color: var(--md-sys-color-on-surface);
   }
@@ -128,7 +172,7 @@ import NavigationBar from '@modules/NavigationBar';
   }
   
   code {
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+    
     background-color: var(--md-sys-color-surface-container);
     padding: 5px;
     border-radius: 3px;
@@ -136,3 +180,18 @@ import NavigationBar from '@modules/NavigationBar';
   }
   
 </style>
+<script>
+  import Lenis from 'lenis'
+const lenis = new Lenis()
+
+lenis.on('scroll', (e) => {
+  console.log(e)
+})
+
+function raf(time:any) {
+  lenis.raf(time)
+  requestAnimationFrame(raf)
+}
+
+requestAnimationFrame(raf)
+</script>
