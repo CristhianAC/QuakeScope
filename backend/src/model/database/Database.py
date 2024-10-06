@@ -25,7 +25,7 @@ class Database:
     print("Cargando datos de Testeo de la Luna")
     folder_list = os.listdir(f"{self.lunar_data}/test/data")
     
-    for folder in folder_list[-1:]:
+    for folder in folder_list:
       self.loadData(self.MOON, f"{self.lunar_data}/test/data/{folder}")
 
     print("Cargando datos de Entrenamiento de la Luna")
@@ -42,18 +42,24 @@ class Database:
     for j, file in enumerate(data_files):
       
       df = pd.read_csv(f"{data_folder}/{file}")
-    
-    
-      data =  []
+      
+      time =  []
+      velocity = []
       for i in df.index:
-        data.append({'time': df.at[i, 'rel_time(sec)'],
-                    'vel': df.at[i, 'velocity(c/s)']})
+        time.append(df.at[i, 'time_rel(sec)'])
+        velocity.append(df.at[i, 'velocity(m/s)'])
+
+      data = {'time': time,
+              'vel': velocity}
         
-      json_file_path = os.path.join(output_folder, f'data-{body}-{j}.json')
+      json_file_path = os.path.join(output_folder, f'{file[:-4]}.json')
       with open(json_file_path, 'w') as json_file:
         json.dump(data, json_file, indent=4)
+      
+      print(file[:-4])
+      print(f"Saved on {json_file_path}")
 
 db = Database()
-db.loadMarsData()
+db.loadMoonData()
 
 # db.loadMoonData()
