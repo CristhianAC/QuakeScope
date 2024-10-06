@@ -1,5 +1,5 @@
 ---
-import Chart from "./Chart"
+import Chart from "./Chart.astro"
 ---
 <section class="bento-grid mx-40 ">
   <div class="bento-item" style="--grid-span: 1;">
@@ -13,8 +13,8 @@ import Chart from "./Chart"
   </div>
 
   <div class="bento-item" style="--grid-span: 2;">
-   Chart
-    <Chart client:only="react"/>
+
+    <Chart/> tiene que tener una linea vertical donde empieza y termina
   </div>
 
   <div class="bento-item" style="--grid-span: 1;">

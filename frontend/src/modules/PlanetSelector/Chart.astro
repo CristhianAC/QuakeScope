@@ -1,0 +1,105 @@
+
+<div class="chart-container">
+  <canvas id="myLineChart"></canvas>
+</div>
+
+
+<style>
+.chart-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+</style>
+
+
+<script>
+  import Chart from 'chart.js/auto';
+
+  const lineCanvas = document.getElementById('myLineChart') as HTMLCanvasElement | null;
+
+  if (lineCanvas) {
+    const ctx = lineCanvas.getContext('2d');
+
+    if (ctx) {
+      const DATA_COUNT = 13;
+      const labels = [];
+      for (let i = 0; i < DATA_COUNT; ++i) {
+        labels.push(i.toString());
+      }
+
+      const datapoints = [0, 20, 20, 60, 60, 120, NaN, 180, 120, 125, 105, 110, 170];
+      const datapoints1 = [0, 30, 80, 60, 60, 120, 2, 190, 190, 125, 105, 110, 170];
+      const datapoints2 = [0, 10, 20, 60, 60, 120, 10, 280, 120, 125, 105, 110, 170];
+
+      // Definir los colores en lugar de Utils.CHART_COLORS
+      const chartColors = {
+        red: 'rgba(255, 99, 132, 1)',
+        blue: 'rgba(54, 162, 235, 1)',
+        green: 'rgba(75, 192, 000, 1)'
+      };
+
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Cubic interpolation (monotone)',
+            data: datapoints,
+            borderColor: chartColors.red,
+            fill: false,
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4
+          },
+          {
+            label: 'Cubic interpolation',
+            data: datapoints1,
+            borderColor: chartColors.blue,
+            fill: false,
+            tension: 0.4
+          },
+          {
+            label: 'Linear interpolation (default)',
+            data: datapoints2,
+            borderColor: chartColors.green,
+            fill: false
+          }
+        ]
+      };
+
+      const config: any = {
+        type: 'line',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Chart.js Line Chart - Cubic interpolation mode'
+            }
+          },
+          interaction: {
+            intersect: false
+          },
+          scales: {
+            x: {
+              display: true,
+              title: {
+                display: true
+              }
+            },
+            y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Value'
+              },
+              suggestedMin: -10,
+              suggestedMax: 200
+            }
+          }
+        }
+      };
+
+      new Chart(ctx, config);
+    }
+  }
+</script>
