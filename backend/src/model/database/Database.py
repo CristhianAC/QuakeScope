@@ -1,53 +1,59 @@
-import pymysql
+import pymysql, os
 import pandas as pd
+import json
 
 class Database:
 
   def __init__ (self):
     self.timeout = 10
-    self.data_dir = r"QuakeScope/backend/src/model/database/data"
+    self.data_dir = f"{os.path.dirname(os.path.dirname(__file__))}/database/data"
     self.mars_data = f"{self.data_dir}/mars"
     self.lunar_data = f"{self.data_dir}/lunar"
 
-  def connect (self):
-    self.connection = pymysql.connect(
-      charset="utf8mb4",
-      connect_timeout=self.timeout,
-      cursorclass=pymysql.cursors.DictCursor,
-      db="defaultdb",
-      host="quakescope-sebastianmaldonado1945-eca1.h.aivencloud.com",
-      password="AVNS_iznx7nwkwnaHqv7lPs7",
-      read_timeout=self.timeout,
-      port=28016,
-      user="avnadmin",
-      write_timeout=self.timeout,
-    )
+    self.MARS = "MARS"
+    self.MOON = "MOON"
+    self.TEST = "TEST"
+    self.TRAIN = "TRAIN"
 
-  def generateTable (self):
-      try:
-        cursor = self.connection.cursor()
-        cursor.execute(
-          '''CREATE TABLE mytest (
-          id INTEGER PRIMARY KEY,
-          body VARCHAR(50),
-          purpous VARCHAR(50),
-          folder VARCHAR(50),
-          date VARCHAR(255),
-          time DECIMAL(18, 15)
-          velocity ()
-          )'''
-          )
-        print(cursor.fetchall())
-      except:
-        print("ERROR en la creación de la Tabla")
-      finally:
-        self.connection.close()
+  def loadMarsData (self):
+    print("Cargando datos de Testeo de Marte")
+    return self.loadData(self.MARS, f"{self.mars_data}/test/data")
 
-    def loadData (self):
-      data = pd.read_csv(f"{self.mars_dir}/test/data/XB.ELYSE.02.BHV.2019-05-23HR02_evid0041.csv")
-      print(data)
+    print("Cargando datos de Entrenamiento de Marte")
+
+  def loadMoonData (self):
+    print("Cargando datos de Testeo de la Luna")
+    folder_list = os.listdir(f"{self.lunar_data}/test/data")
+    
+    for folder in folder_list[-1:]:
+      self.loadData(self.MOON, f"{self.lunar_data}/test/data/{folder}")
+
+    print("Cargando datos de Entrenamiento de la Luna")
+
+  def loadData (self, body: str, data_folder):
+    data_files = [file for file in os.listdir(data_folder) if file.split(".")[-1] == 'csv']
+    folder_name = data_folder.split("/")[-1]
+    print(folder_name)
+    output_folder = f'{self.data_dir}/data-jsons/{folder_name}/'
+    os.makedirs(output_folder, exist_ok=True)
+    print(f"Carpeta de salida: {output_folder}")
+    print(f"Existe: {os.path.exists(output_folder)}")
+
+    for j, file in enumerate(data_files):
+      
+      df = pd.read_csv(f"{data_folder}/{file}")
+    
+    
+      data =  []
+      for i in df.index:
+        data.append({'time': df.at[i, 'rel_time(sec)'],
+                    'vel': df.at[i, 'velocity(c/s)']})
+        
+      json_file_path = os.path.join(output_folder, f'data-{body}-{j}.json')
+      with open(json_file_path, 'w') as json_file:
+        json.dump(data, json_file, indent=4)
 
 db = Database()
-db.connect()
-db.loadData()
+db.loadMarsData()
 
+# db.loadMoonData()
