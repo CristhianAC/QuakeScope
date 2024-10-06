@@ -4,7 +4,7 @@ interface Props {
 }
 
 const { title } = Astro.props;
-import NavigationBar from '@modules/NavigationBar/NavigationBar';
+import NavigationBar from '@modules/NavigationBar';
 ---
 
 <!doctype html> 
@@ -18,7 +18,7 @@ import NavigationBar from '@modules/NavigationBar/NavigationBar';
 </head>
 
 <body>
-  <NavigationBar />
+  <NavigationBar client:only ="react"/>
   <main>  
     <slot />
   </main>
