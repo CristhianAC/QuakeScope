@@ -71,7 +71,7 @@ class Database:
       print(f"Saved on {json_file_path}")
 
 db = Database()
-db.loadMoonData()
-#db.loadMarsData()
+# db.loadMoonData()
+db.loadMarsData()
 
 # db.loadMoonData()
