@@ -122,7 +122,8 @@ if (lineCanvas) {
 const lineCanvas = document.getElementById('myChart') as HTMLCanvasElement | null;
 
 if (lineCanvas) {
-  const ctx = lineCanvas.getContext('2d');
+  const ctx = lineCanvas.getContext('2d');                    
+  
   if (ctx) {
     const config: any = {
       type: 'line',
@@ -154,23 +155,30 @@ if (lineCanvas) {
             const yAxis = chart.scales.y;
 
              // Define the array of indices where the lines will be drawn
-            const indices = [1, 3]; // Cambia los índices para donde quieras las líneas
+            const indices = [1498.9,1998]; // Cambia los índices para donde quieras las líneas
 
             if (indices.length > 0 && xAxis) {
-              indices.forEach((index: number) => {
-                const xValue = xAxis.getPixelForValue(index);
+  indices.forEach((index: number) => {
+    // Si 'Marte.time' no es numérico, encontrar el índice correspondiente
+    const xValue = Marte.time.find((time: number) => time >= index);
+    console.log(index,xValue, xAxis)
+    
+    if (xValue !== undefined) {
+      const pixelPosition = xAxis.getPixelForValue(xValue);
+      
+      // Dibuja la línea vertical en la posición correcta
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(pixelPosition, yAxis.top);
+      ctx.lineTo(pixelPosition, yAxis.bottom);
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+    }
+  });
+}
 
-                 // Draw the line for each index
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(xValue, yAxis.top);
-                ctx.lineTo(xValue, yAxis.bottom);
-                ctx.strokeStyle = 'red';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                ctx.restore();
-              });
-            }
           }
         }
       ]
