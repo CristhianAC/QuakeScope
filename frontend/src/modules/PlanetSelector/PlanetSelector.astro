@@ -144,6 +144,9 @@
   import * as THREE from "three";
   import Chart from "chart.js/auto";
   import luna1 from "../../assets/luna/xa.s16.00.mhz.1973-08-25HR00_evid00443.json";
+  import luna2 from "../../assets/luna/xa.s16.00.mhz.1975-03-26HR00_evid00186.json";
+  import luna3 from "../../assets/luna/xa.s16.00.mhz.1977-04-17HR00_evid00249.json";
+  
   document.addEventListener("astro:page-load", () => {
     let moonSelected = true;
 
@@ -261,18 +264,8 @@
     const options = {
       luna: {
         luna1: luna1,
-        luna2: {
-          time: [1, 2, 3, 4],
-          vel: [10, 20, 30, 40],
-          sismo_start: 2,
-          sismo_end: 4,
-        },
-        luna3: {
-          time: [2, 4, 6, 8],
-          vel: [5, 15, 25, 35],
-          sismo_start: 3,
-          sismo_end: 6,
-        },
+        luna2: luna2,
+        luna3: luna3,
       },
       marte: {
         marte1: {
@@ -337,10 +330,10 @@
                   const yAxis = chart.scales.y;
 
                   const sismoStart = selectedOption.time.findIndex(
-                    (time: number) => time === selectedOption.sismo_start
+                    (time: number) => time >= selectedOption.sismo_start
                   );
                   const sismoEnd = selectedOption.time.findIndex(
-                    (time: number) => time === selectedOption.sismo_end
+                    (time: number) => time >= selectedOption.sismo_end
                   );
                   const indices = [sismoStart, sismoEnd];
 
@@ -406,8 +399,8 @@
     function handleSelectChange(event: Event) {
       const selectElement = event.target as HTMLSelectElement;
       const selectedValue = selectElement.value;
-      // @ts-ignore
-      selectedOption = isMoonSelected
+      
+      selectedOption = moonSelected
         ? // @ts-ignore
           options.luna[selectedValue]
         : // @ts-ignore
