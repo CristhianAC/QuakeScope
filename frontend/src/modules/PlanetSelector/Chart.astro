@@ -1,5 +1,9 @@
 ---
+interface Props {
+  planet?: "mars" | "moon";
 
+}
+const { planet } = Astro.props;
 ---
 
 <section class="flex flex-col justify-center">
