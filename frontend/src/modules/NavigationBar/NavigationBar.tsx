@@ -18,7 +18,7 @@ const NavigationBar = () => {
         className={` w-64 h-[100vh] bg-[var(--md-sys-color-inverse-primary-transparent)] fixed z-[100] transition-all ${
           isOpened ? " left-0" : " -left-64"
         }
-         flex flex-col justify-around items-center gap-20 py-64`}
+         flex flex-col font-bold items-center gap-20 py-64`}
       >
         <a href="/">Home</a>
         <a href="/dashboard">Dashboard</a>
