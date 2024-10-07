@@ -1,20 +1,31 @@
 ---
-import Chart from "./Chart.astro"
+import Chart from "./Chart.astro";
+
+interface Props {
+  planet: "mars" | "moon";
+}
+
+let selectedPlanet: "mars" | "moon" = "moon"; // Planeta seleccionado por defecto
+
+function switchPlanet() {
+  selectedPlanet = selectedPlanet === "moon" ? "mars" : "moon";
+}
 ---
-<section class="bento-grid mx-40 ">
+
+<section class="bento-grid mx-40">
   <div class="bento-item" style="--grid-span: 1;">
-    <div class=" flex justify-center items-center m-4">
-      <h2 id="title">Choose the StelarBody:</h2>
+    <div class="flex justify-center items-center m-4">
+      <h2 id="title">Choose the StelarBody: {selectedPlanet === "moon" ? "Moon" : "Mars"}</h2>
     </div>
     <div id="planet" class="planet-container"></div>
     <div class="w-full flex pt-4 justify-center">
-      <button id="switchButton" class="">Switch</button>
+      <button id="switchButton" class="" >Switch</button>
     </div>
   </div>
 
   <div class="bento-item" style="--grid-span: 2;">
-
-    <Chart/>                               
+    <!-- Pasa el planeta seleccionado como prop al componente Chart -->
+    <Chart planet={selectedPlanet} />
   </div>
 
   <div class="bento-item" style="--grid-span: 1;">
@@ -25,6 +36,7 @@ import Chart from "./Chart.astro"
     </p>
   </div>
 </section>
+
 
 <style>
   .bento-grid {
